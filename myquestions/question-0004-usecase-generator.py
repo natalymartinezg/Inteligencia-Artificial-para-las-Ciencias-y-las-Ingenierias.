@@ -3,7 +3,7 @@ import numpy as np
 import random
 from sklearn.preprocessing import LabelEncoder
 
-def aplicar_label_encoding():
+def generar_caso_de_uso_aplicar_label_encoding():
     """
     Genera un caso de prueba aleatorio (input y output esperado)
     para la función aplicar_label_encoding.
@@ -31,7 +31,7 @@ def aplicar_label_encoding():
 
 
 if __name__ == "__main__":
-    i, o = aplicar_label_encoding()
+    i, o = generar_caso_de_uso_aplicar_label_encoding()
 
     print("---- inputs ----")
     for k, v in i.items():
