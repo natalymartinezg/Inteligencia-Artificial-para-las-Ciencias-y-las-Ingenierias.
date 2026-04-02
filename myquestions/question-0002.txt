@@ -2,7 +2,7 @@ El Problema:
 En sistemas de monitoreo, es importante analizar cómo cambian los valores dentro de cada grupo a lo largo del tiempo.
 
 Tu Misión:
-Escribe una función llamada calcular_variacion_por_grupo(df, col_grupo, col_valor) que:
+Escribe una función llamada generar_caso_de_uso_calcular_variacion_por_grupo(df, col_grupo, col_valor) que:
 
 1. Ordene el DataFrame por col_grupo y el índice.
 2. Calcule la diferencia entre valores consecutivos dentro de cada grupo (diff()).
