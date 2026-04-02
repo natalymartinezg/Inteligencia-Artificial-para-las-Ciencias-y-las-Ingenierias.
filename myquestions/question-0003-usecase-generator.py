@@ -3,7 +3,7 @@ import numpy as np
 import random
 from sklearn.preprocessing import MinMaxScaler
 
-def normalizar_min_max():
+def generar_caso_de_uso_normalizar_min_max():
     """
     Genera un caso de prueba aleatorio (input y output esperado)
     para la función normalizar_min_max.
@@ -31,7 +31,7 @@ def normalizar_min_max():
 
 
 if __name__ == "__main__":
-    i, o = normalizar_min_max()
+    i, o = generar_caso_de_uso_normalizar_min_max()
 
     print("---- inputs ----")
     for k, v in i.items():
