@@ -2,7 +2,7 @@ El Problema:
 En muchos datasets de Machine Learning, las variables categóricas (como nombres de ciudades, niveles o categorías) deben convertirse a valores numéricos para poder ser procesadas por los modelos.
 
 Tu Misión:
-Escribe una función llamada aplicar_label_encoding(df, columna) que:
+Escribe una función llamada generar_caso_de_uso_aplicar_label_encoding(df, columna) que:
 
 1. Seleccione la columna indicada por columna, que contiene valores de texto (categorías).
 2. Aplique LabelEncoder de sklearn para convertir las categorías a enteros (empezando desde 0).
