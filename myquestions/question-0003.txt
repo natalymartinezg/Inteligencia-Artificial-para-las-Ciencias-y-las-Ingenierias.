@@ -2,7 +2,7 @@ El Problema:
 Tienes un dataset con variables numéricas en diferentes escalas (por ejemplo temperatura, presión y humedad). Para que un modelo de Machine Learning pueda comparar estas variables en igualdad de condiciones, necesitas normalizarlas para que todos sus valores queden en el rango [0, 1].
 
 Tu Misión:
-Escribe una función llamada normalizar_min_max(df, columnas) que:
+Escribe una función llamada generar_caso_de_uso_normalizar_min_max(df, columnas) que:
 
 1. Seleccione las columnas indicadas en columnas.
 2. Aplique MinMaxScaler de sklearn para transformar los valores al rango [0, 1].
