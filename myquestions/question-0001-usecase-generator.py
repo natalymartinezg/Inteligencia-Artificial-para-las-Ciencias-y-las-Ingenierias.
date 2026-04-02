@@ -1,95 +1,62 @@
 import pandas as pd
 import numpy as np
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler
 import random
 
-def generar_caso_de_uso_preparar_datos():
+def generar_caso_de_uso_filtrar_y_transformar_sensores():
     """
-    Genera un caso de uso:
-    - input: diccionario con argumentos para preparar_datos
-    - output: resultado esperado (ground truth)
+    Genera un caso de prueba aleatorio (input y output esperado)
+    para la función filtrar_y_transformar_sensores.
     """
 
-    # =========================
-    # 1. Dimensiones aleatorias
-    # =========================
-    n_rows = random.randint(5, 15)
-    n_features = random.randint(2, 5)
+    # 1. Configuración
+    n = random.randint(5, 15)
 
-    # =========================
-    # 2. Crear DataFrame
-    # =========================
-    data = np.random.randn(n_rows, n_features)
-    feature_cols = [f'feature_{i}' for i in range(n_features)]
-    df = pd.DataFrame(data, columns=feature_cols)
+    # 2. Generar datos (incluye negativos y posibles outliers)
+    data = np.random.randn(n) * 20
+    df = pd.DataFrame({'sensor': data})
 
-    # =========================
-    # 3. Asegurar NaNs
-    # =========================
-    n_nans = max(1, int(0.1 * df.size))
-    for _ in range(n_nans):
-        i = random.randint(0, n_rows - 1)
-        j = random.randint(0, n_features - 1)
-        df.iat[i, j] = np.nan
+    # Introducir NaNs (~10%)
+    mask = np.random.choice([True, False], size=n, p=[0.1, 0.9])
+    df.loc[mask, 'sensor'] = np.nan
 
-    # =========================
-    # 4. Columna target
-    # =========================
-    target_col = 'target_variable'
-    df[target_col] = np.random.randint(0, 2, size=n_rows)
+    columna_sensor = 'sensor'
 
-    # =========================
-    # INPUT
-    # =========================
+    # ---------------------------------------------------------
+    # 3. INPUT
+    # ---------------------------------------------------------
     input_data = {
         'df': df.copy(),
-        'target_col': target_col
+        'columna_sensor': columna_sensor
     }
 
-    # =========================
-    # OUTPUT ESPERADO
-    # =========================
-    X = df.drop(columns=[target_col])
-    y = df[target_col].to_numpy()
+    # ---------------------------------------------------------
+    # 4. OUTPUT ESPERADO
+    # ---------------------------------------------------------
+    df_out = df.copy()
 
-    # Imputación
-    imputer = SimpleImputer(strategy='mean')
-    X_imputed = imputer.fit_transform(X)
+    # 1. Imputar con mediana
+    mediana = df_out[columna_sensor].median()
+    df_out[columna_sensor] = df_out[columna_sensor].fillna(mediana)
 
-    # Escalado
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X_imputed)
+    # 2. Winsorización (percentil 95)
+    p95 = np.percentile(df_out[columna_sensor], 95)
+    df_out[columna_sensor] = np.where(
+        df_out[columna_sensor] > p95,
+        p95,
+        df_out[columna_sensor]
+    )
 
-    output_data = (X_scaled, y)
+    # 3. Transformación log segura (evita NaN)
+    df_out['sensor_log'] = np.log1p(np.maximum(df_out[columna_sensor], 0))
 
-    return input_data, output_data
+    return input_data, df_out
 
 
-# =========================
-# EJECUCIÓN
-# =========================
 if __name__ == "__main__":
+    i, o = generar_caso_de_uso_filtrar_y_transformar_sensores()
 
-    input_data, output_data = generar_caso_de_uso_preparar_datos()
+    print("---- inputs ----")
+    for k, v in i.items():
+        print("\n", k, ":\n", v)
 
-    print("=========== INPUT ===========")
-    print("Target column:", input_data['target_col'])
-    print("\nDataFrame:")
-    print(input_data['df'])
-
-    print("\nNaNs por columna:")
-    print(input_data['df'].isna().sum())
-
-    print("\n=========== OUTPUT ESPERADO ===========")
-    X_out, y_out = output_data
-
-    print("\nX (procesada):")
-    print(X_out)
-
-    print("\ny (target):")
-    print(y_out)
-
-    print("\nShapes:")
-    print("X:", X_out.shape)
-    print("y:", y_out.shape)
+    print("\n---- expected output ----\n", o)
