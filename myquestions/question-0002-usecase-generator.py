@@ -18,16 +18,23 @@ def generar_caso_de_uso_calcular_variacion_por_grupo():
     col_grupo = 'grupo'
     col_valor = 'valor'
 
+    # INPUT
     input_data = {
         'df': df.copy(),
         'col_grupo': col_grupo,
         'col_valor': col_valor
     }
 
+    # OUTPUT
     df_out = df.copy()
 
-    df_out = df_out.sort_values(by=[col_grupo]).reset_index(drop=True)
+    # Ordenar solo por grupo (sin perder orden interno)
+    df_out = df_out.sort_values(by=[col_grupo])
+
+    # Calcular variación
     df_out['variacion'] = df_out.groupby(col_grupo)[col_valor].diff()
+
+    # Reemplazar NaN por 0
     df_out['variacion'] = df_out['variacion'].fillna(0)
 
     return input_data, df_out
