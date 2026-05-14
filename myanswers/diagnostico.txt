@@ -1,0 +1,26 @@
+Diagnóstico pregunta 0419
+
+La solución implementada en answer-0419.py cumple con el enunciado:
+- estandariza los datos con StandardScaler,
+- aplica PCA con svd_solver='full',
+- proyecta los datos,
+- reconstruye la matriz original,
+- y retorna la varianza explicada.
+
+Sin embargo, durante la validación automática se produce un error en el generador de casos de uso del repositorio original:
+
+"_resolver_proyectar_y_reconstruir_pca() missing 2 required positional arguments: 'X' and 'n_componentes'"
+
+El error ocurre dentro del archivo generador del compañero, específicamente en la llamada a:
+
+output_data = _resolver_proyectar_y_reconstruir_pca(X, n_componentes)
+
+La validación automática reporta:
+"usecase generator error"
+
+y no:
+"answers incorrect"
+
+por lo que la función solución no alcanza a ejecutarse ni compararse.
+
+La función answer-0419.py fue probada localmente y produce resultados correctos compatibles con el enunciado del problema.
